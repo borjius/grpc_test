@@ -9,10 +9,6 @@
     <artifactId>grpc-server</artifactId>
     <name>GRPC - Server</name>
 
-    <properties>
-        <grpc.spring-starter.version>2.14.0.RELEASE</grpc.spring-starter.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
