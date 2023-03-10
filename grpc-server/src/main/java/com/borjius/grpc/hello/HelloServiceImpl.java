@@ -4,7 +4,9 @@ import com.borjius.grpc.auto.HelloRequest;
 import com.borjius.grpc.auto.HelloResponse;
 import com.borjius.grpc.auto.HelloServiceGrpc;
 import io.grpc.stub.StreamObserver;
+import net.devh.boot.grpc.server.service.GrpcService;
 
+@GrpcService(interceptors = HelloServiceInterceptor.class)
 public class HelloServiceImpl extends HelloServiceGrpc.HelloServiceImplBase {
 
     @Override

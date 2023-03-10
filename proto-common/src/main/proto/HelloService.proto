@@ -11,6 +11,11 @@ message HelloResponse {
   string greeting = 1;
 }
 
+message NumberResponse {
+  int32 numberOfElements = 1;
+}
+
 service HelloService {
   rpc hello(HelloRequest) returns (HelloResponse);
+  rpc numbers(HelloRequest) returns (NumberResponse);
 }
