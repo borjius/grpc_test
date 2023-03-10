@@ -1,4 +1,4 @@
-package com.borjius.grpc.hello.auth;
+package com.borjius.grpc.auth;
 
 import com.borjius.grpc.auto.HelloServiceGrpc;
 import net.devh.boot.grpc.server.security.authentication.BasicGrpcAuthenticationReader;

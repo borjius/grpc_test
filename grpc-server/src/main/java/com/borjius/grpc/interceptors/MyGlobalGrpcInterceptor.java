@@ -1,4 +1,4 @@
-package com.borjius.grpc.hello;
+package com.borjius.grpc.interceptors;
 
 import io.grpc.Metadata;
 import io.grpc.ServerCall;
