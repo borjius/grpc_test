@@ -39,9 +39,6 @@ public class AuthenticationConfig {
         final ManualGrpcSecurityMetadataSource source = new ManualGrpcSecurityMetadataSource();
         source.set(HelloServiceGrpc.METHOD_HELLO, AccessPredicate.authenticated());
         source.set(HelloServiceGrpc.METHOD_NUMBERS, AccessPredicate.permitAll());
-//        source.set(HelloServiceGrpc.getMethodB(), AccessPredicate.hasRole("ROLE_USER"));
-//        source.set(HelloServiceGrpc.getMethodC(), AccessPredicate.hasAllRole("ROLE_FOO", "ROLE_BAR"));
-//        source.set(HelloServiceGrpc.getMethodD(), (auth, call) -> "admin".equals(auth.getName()));
         source.setDefault(AccessPredicate.denyAll());
         return source;
     }

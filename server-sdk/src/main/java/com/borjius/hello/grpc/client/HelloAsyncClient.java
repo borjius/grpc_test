@@ -2,45 +2,52 @@ package com.borjius.hello.grpc.client;
 
 import com.borjius.grpc.auto.HelloRequest;
 import com.borjius.grpc.auto.HelloServiceGrpc;
+import com.borjius.hello.grpc.util.FutureConverter;
 import io.grpc.CallCredentials;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import net.devh.boot.grpc.client.security.CallCredentialsHelper;
 
-public class HelloClient {
+import java.util.concurrent.CompletableFuture;
+
+public class HelloAsyncClient {
 
     private static final String DESTINATION_HOST = "localhost";
     private static final int DESTINATION_PORT = 8080;
 
-    private HelloServiceGrpc.HelloServiceBlockingStub regularStub;
+    private final HelloServiceGrpc.HelloServiceFutureStub futureStub;
 
-    // Im not gonna check credentials content..
-    public HelloClient(final BasicCredentials credentials) {
+    public HelloAsyncClient(final BasicCredentials credentials) {
         final ManagedChannel managedChannel = ManagedChannelBuilder
                 .forAddress(DESTINATION_HOST, DESTINATION_PORT)
                 .usePlaintext()
                 .build();
         final CallCredentials callCredentials = CallCredentialsHelper.basicAuth(credentials.getUsername(),
                 credentials.getPassword());
-        this.regularStub = HelloServiceGrpc.newBlockingStub(managedChannel).withCallCredentials(callCredentials);
+        this.futureStub = HelloServiceGrpc.newFutureStub(managedChannel)
+                .withCallCredentials(callCredentials);
     }
 
-    public HelloClient() {
+    public HelloAsyncClient() {
         final ManagedChannel managedChannel = ManagedChannelBuilder
                 .forAddress(DESTINATION_HOST, DESTINATION_PORT)
                 .usePlaintext()
                 .build();
-        this.regularStub = HelloServiceGrpc.newBlockingStub(managedChannel);
+        this.futureStub = HelloServiceGrpc.newFutureStub(managedChannel);
     }
 
-    public String hello(final String firstName, final String lastName) {
+    public CompletableFuture<String> hello(final String firstName, final String lastName) {
         final HelloRequest helloRequest = createRequest(firstName, lastName);
-        return regularStub.hello(helloRequest).getGreeting();
+        return FutureConverter
+                .convertToCompletable(futureStub.hello(helloRequest))
+                        .thenApplyAsync(helloResponse -> helloResponse.getGreeting());
     }
 
-    public int numbers(final String firstName, final String lastName) {
+    public CompletableFuture<Integer> numbers(final String firstName, final String lastName) {
         final HelloRequest helloRequest = createRequest(firstName, lastName);
-        return regularStub.numbers(helloRequest).getNumberOfElements();
+        return FutureConverter
+                .convertToCompletable(futureStub.numbers(helloRequest))
+                .thenApplyAsync(helloResponse -> helloResponse.getNumberOfElements());
     }
 
     private HelloRequest createRequest(final String firstName, final String lastName) {
