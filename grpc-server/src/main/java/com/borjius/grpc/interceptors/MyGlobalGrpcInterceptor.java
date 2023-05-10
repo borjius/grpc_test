@@ -11,12 +11,14 @@ import org.springframework.core.annotation.Order;
 
 @GrpcGlobalServerInterceptor
 @Order(2)
-public class MyGlobalGrpcInterceptor implements ServerInterceptor {
+public final class MyGlobalGrpcInterceptor implements ServerInterceptor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MyGlobalGrpcInterceptor.class);
     @Override
-    public <ReqT, RespT> ServerCall.Listener<ReqT> interceptCall(ServerCall<ReqT, RespT> serverCall, Metadata metadata,
-                                                                 ServerCallHandler<ReqT, RespT> serverCallHandler) {
+    public <ReqT, RespT> ServerCall.Listener<ReqT> interceptCall(final ServerCall<ReqT, RespT> serverCall,
+                                                                 final Metadata metadata,
+                                                                 final ServerCallHandler<ReqT, RespT>
+                                                                             serverCallHandler) {
         LOGGER.info("Intercepting globally");
         return serverCallHandler.startCall(serverCall, metadata);
     }

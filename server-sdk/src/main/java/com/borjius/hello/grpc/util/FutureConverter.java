@@ -10,14 +10,20 @@ import java.util.concurrent.Executors;
 
 public class FutureConverter {
 
-    private static final Executor executor = Executors.newFixedThreadPool(10);
+    private static final Executor EXECUTOR = Executors.newFixedThreadPool(10);
 
+    /**
+     * Converts a ListenableFuture to a CompletableFuture.
+     * @param listenableFuture listenableFuture
+     * @return completableFuture
+     * @param <T> any type
+     */
     public static <T> CompletableFuture<T> convertToCompletable(final ListenableFuture<T> listenableFuture) {
         final CompletableFuture<T> completable = new CompletableFuture<T>() {
             @Override
-            public boolean cancel(boolean mayInterruptIfRunning) {
+            public boolean cancel(final boolean mayInterruptIfRunning) {
                 // propagate cancel to the listenable future
-                boolean result = listenableFuture.cancel(mayInterruptIfRunning);
+                final boolean result = listenableFuture.cancel(mayInterruptIfRunning);
                 super.cancel(mayInterruptIfRunning);
                 return result;
             }
@@ -26,15 +32,15 @@ public class FutureConverter {
         // add callback
         Futures.addCallback(listenableFuture, new FutureCallback<T>() {
             @Override
-            public void onSuccess(T result) {
+            public void onSuccess(final T result) {
                 completable.complete(result);
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(final Throwable t) {
                 completable.completeExceptionally(t);
             }
-        }, executor);
+        }, EXECUTOR);
         return completable;
     }
 }

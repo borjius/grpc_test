@@ -13,8 +13,9 @@ import java.util.ArrayList;
 public class HelloAuthenticationProvider implements AuthenticationProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HelloAuthenticationProvider.class);
+
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
         LOGGER.info("In HelloAuthenticationProvider.authenticate");
         final String password = (String) authentication.getCredentials();
         final String user = (String) authentication.getPrincipal();
@@ -27,7 +28,7 @@ public class HelloAuthenticationProvider implements AuthenticationProvider {
     }
 
     @Override
-    public boolean supports(Class<?> authentication) {
+    public boolean supports(final Class<?> authentication) {
         LOGGER.info("In HelloAuthenticationProvider.supports");
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }

@@ -13,6 +13,7 @@ import java.util.Random;
 public class HelloServiceImpl extends HelloServiceGrpc.HelloServiceImplBase {
 
     private static final Random RANDOM = new Random();
+    private static final int RANDOM_ELEMENTS = 10;
 
     @Override
     public void hello(final HelloRequest request, final StreamObserver<HelloResponse> responseObserver) {
@@ -33,7 +34,7 @@ public class HelloServiceImpl extends HelloServiceGrpc.HelloServiceImplBase {
     @Override
     public void numbers(final HelloRequest request, final StreamObserver<NumberResponse> responseObserver) {
         final NumberResponse response = NumberResponse.newBuilder()
-                .setNumberOfElements(RANDOM.nextInt(10))
+                .setNumberOfElements(RANDOM.nextInt(RANDOM_ELEMENTS))
                 .build();
 
         responseObserver.onNext(response);

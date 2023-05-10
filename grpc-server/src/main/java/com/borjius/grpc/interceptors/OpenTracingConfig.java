@@ -18,7 +18,7 @@ public class OpenTracingConfig {
 
     @GrpcGlobalServerInterceptor
     @Order(1)
-    public TracingServerInterceptor tracingInterceptor(Tracer tracer) {
+    public TracingServerInterceptor tracingInterceptor(final Tracer tracer) {
         return TracingServerInterceptor
                 .newBuilder()
                 .withTracer(tracer)

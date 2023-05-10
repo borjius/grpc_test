@@ -5,7 +5,7 @@ public class BasicCredentials {
     private final String username;
     private final String password;
 
-    public BasicCredentials(String username, String password) {
+    public BasicCredentials(final String username, final String password) {
         this.username = username;
         this.password = password;
     }
